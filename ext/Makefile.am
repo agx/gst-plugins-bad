@@ -28,6 +28,12 @@ else
 BZ2_DIR=
 endif
 
+if USE_CRYSTALHD
+BCMDEC_DIR=bcmdec
+else
+BCMDEC_DIR=
+endif
+
 if USE_CHROMAPRINT
 CHROMAPRINT_DIR=chromaprint
 else
@@ -383,6 +389,7 @@ SUBDIRS=\
 	$(APEXSINK_DIR) \
 	$(AUDIOFILE_DIR) \
 	$(BZ2_DIR) \
+	$(BCMDEC_DIR) \
 	$(CHROMAPRINT_DIR) \
 	$(CURL_DIR) \
 	$(DASH_DIR) \

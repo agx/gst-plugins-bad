@@ -1120,6 +1120,37 @@ AG_GST_CHECK_FEATURE(CHROMAPRINT, [chromaprint], chromaprint, [
   AC_SUBST(CHROMAPRINT_LIBS)
 ])
 
+dnl *** crystalhd ***
+translit(dnm, m, l) AM_CONDITIONAL(USE_CRYSTALHD, true)
+AG_GST_CHECK_FEATURE(CRYSTALHD, [crystalhd library], crystalhd, [
+  CRYSTALHD_CFLAGS="-I/usr/include/libcrystalhd"
+  CRYSTALHD_LIBS="-lcrystalhd"
+
+  save_CFLAGS=$CFLAGS
+  save_LIBS=$LIBS
+  CFLAGS="$CFLAGS $CRYSTALHD_CFLAGS"
+  LIBS="$LIBS $CRYSTALHD_LIBS"
+
+  AC_MSG_CHECKING([for crystalhd])
+  AC_LINK_IFELSE([AC_LANG_PROGRAM([[
+#include <inttypes.h>
+#include <stdlib.h>
+#include <libcrystalhd_if.h>
+]], [[
+    DtsDeviceClose(NULL);
+]])],
+  [ AC_MSG_RESULT(yes)
+    HAVE_CRYSTALHD="yes"
+    AC_SUBST(CRYSTALHD_CFLAGS)
+    AC_SUBST(CRYSTALHD_LIBS)
+  ],[AC_MSG_RESULT(no)
+     HAVE_CRYSTALHD="no"
+  ])
+
+  LIBS=$save_LIBS
+  CFLAGS=$save_CFLAGS
+])
+
 dnl *** Curl ***
 translit(dnm, m, l) AM_CONDITIONAL(USE_CURL, true)
 AG_GST_CHECK_FEATURE(CURL, [Curl plugin], curl, [
@@ -2195,6 +2226,7 @@ AM_CONDITIONAL(USE_VOAACENC, false)
 AM_CONDITIONAL(USE_APEXSINK, false)
 AM_CONDITIONAL(USE_BZ2, false)
 AM_CONDITIONAL(USE_CHROMAPRINT, false)
+AM_CONDITIONAL(USE_CRYSTALHD, false)
 AM_CONDITIONAL(USE_CURL, false)
 AM_CONDITIONAL(USE_SSH2, false)
 AM_CONDITIONAL(USE_DASH, false)
@@ -2466,6 +2498,7 @@ ext/voamrwbenc/Makefile
 ext/voaacenc/Makefile
 ext/assrender/Makefile
 ext/apexsink/Makefile
+ext/bcmdec/Makefile
 ext/bz2/Makefile
 ext/chromaprint/Makefile
 ext/curl/Makefile
