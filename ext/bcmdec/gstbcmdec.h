@@ -242,11 +242,6 @@ GType gst_bcm_dec_get_type (void);
 
 static void gst_bcm_dec_base_init (gpointer gclass);
 
-static void gst_bcm_dec_class_init (GstBcmDecClass * klass);
-
-static void gst_bcm_dec_init (GstBcmDec * bcmdec);
-
-
 static void gst_bcm_dec_finalize (GObject * object);
 
 static GstFlowReturn
