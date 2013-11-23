@@ -2332,7 +2332,7 @@ bcmdec_create_shmem (GstBcmDec * bcmdec, int *shmem_id)
 {
   int shmid = -1;
   key_t shmkey = BCM_GST_SHMEM_KEY;
-  shmid_ds buf;
+  struct shmid_ds buf;
 
   if (shmem_id == NULL) {
     GST_ERROR_OBJECT (bcmdec, "Invalid argument ...");
@@ -2420,7 +2420,7 @@ static BC_STATUS
 bcmdec_del_shmem (GstBcmDec * bcmdec)
 {
   int shmid = 0;
-  shmid_ds buf;
+  struct shmid_ds buf;
 
   //First dettach the shared mem segment
   if (shmdt (g_inst_sts) == -1)
