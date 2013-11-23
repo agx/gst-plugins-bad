@@ -405,7 +405,7 @@ gst_bcm_dec_sink_set_caps (GstPad * pad, GstCaps * caps)
   GST_DEBUG_OBJECT (pad, "setcaps called");
 
   intersection = gst_caps_intersect (gst_pad_get_pad_template_caps (pad), caps);
-  GST_DEBUG_OBJECT (bcmdec, "Intersection return %", GST_PTR_FORMAT,
+  GST_DEBUG_OBJECT (bcmdec, "Intersection return %" GST_PTR_FORMAT,
       intersection);
   if (gst_caps_is_empty (intersection)) {
     GST_ERROR_OBJECT (bcmdec, "setscaps:caps empty");
