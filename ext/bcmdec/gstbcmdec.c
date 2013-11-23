@@ -1087,10 +1087,9 @@ bcmdec_init_procout (GstBcmDec * bcmdec, BC_DTS_PROC_OUT * pout, guint8 * buf)
 static void
 bcmdec_set_framerate (GstBcmDec * bcmdec, guint32 nFrameRate)
 {
-  gdouble framerate;
+  gdouble framerate = (gdouble) nFrameRate / 1000;
 
 //      bcmdec->interlace = FALSE;
-  framerate = (gdouble) nFrameRate / 1000;
 
   if ((framerate) && (bcmdec->output_params.framerate != framerate)) {
     bcmdec->output_params.framerate = framerate;
@@ -1100,7 +1099,7 @@ bcmdec_set_framerate (GstBcmDec * bcmdec, guint32 nFrameRate)
     //if (bcmdec->interlace)
     //      bcmdec->output_params.framerate /= 2;
 
-    GST_DEBUG_OBJECT (bcmdec, "framerate = %x", framerate);
+    GST_DEBUG_OBJECT (bcmdec, "framerate = %f", framerate);
   }
 }
 
