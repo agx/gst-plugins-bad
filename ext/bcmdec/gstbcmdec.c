@@ -147,10 +147,10 @@ static void
 gst_bcm_dec_base_init (gpointer gclass)
 {
   BC_HW_CAPS hwCaps;
+  GstElementClass *element_class;
 
   GST_DEBUG_OBJECT (gclass, "gst_bcm_dec_base_init");
-
-  GstElementClass *element_class = GST_ELEMENT_CLASS (gclass);
+  element_class = GST_ELEMENT_CLASS (gclass);
 
   hwCaps.DecCaps = 0;
   decif_getcaps (NULL, &hwCaps);
@@ -303,22 +303,21 @@ gst_bcm_dec_get_property (GObject * object, guint prop_id,
 static gboolean
 gst_bcm_dec_sink_event (GstPad * pad, GstObject * parent, GstEvent * event)
 {
+  const GstSegment *newsegment;
   GstBcmDec *bcmdec;
+  GstCaps *caps;
   BC_STATUS sts = BC_STS_SUCCESS;
-  bcmdec = GST_BCM_DEC (gst_pad_get_parent (pad));
-
   gboolean result = TRUE;
+
+  bcmdec = GST_BCM_DEC (gst_pad_get_parent (pad));
 
   switch (GST_EVENT_TYPE (event)) {
     case GST_EVENT_CAPS:
-      GstCaps * caps;
       gst_event_parse_caps (event, &caps);
       result = gst_bcm_dec_sink_set_caps (pad, caps);
       break;
 
     case GST_EVENT_SEGMENT:
-      const GstSegment *newsegment;
-
       gst_event_parse_segment (event, &newsegment);
 
       bcmdec->base_clock_time = newsegment->start;
@@ -391,7 +390,6 @@ static gboolean
 gst_bcm_dec_sink_set_caps (GstPad * pad, GstCaps * caps)
 {
   GstBcmDec *bcmdec;
-  bcmdec = GST_BCM_DEC (gst_pad_get_parent (pad));
   GstStructure *structure;
   GstMapInfo info;
   GstCaps *intersection;
@@ -403,6 +401,7 @@ gst_bcm_dec_sink_set_caps (GstPad * pad, GstCaps * caps)
   GstBuffer *buffer = NULL;
   guint index;
 
+  bcmdec = GST_BCM_DEC (gst_pad_get_parent (pad));
   GST_DEBUG_OBJECT (pad, "setcaps called");
 
   intersection = gst_caps_intersect (gst_pad_get_pad_template_caps (pad), caps);
@@ -1204,9 +1203,9 @@ bcmdec_set_aspect_ratio (GstBcmDec * bcmdec, BC_PIC_INFO_BLOCK * pic_info)
 static gboolean
 bcmdec_format_change (GstBcmDec * bcmdec, BC_PIC_INFO_BLOCK * pic_info)
 {
+  gboolean result = FALSE;
   GST_DEBUG_OBJECT (bcmdec, "Got format Change to %dx%d", pic_info->width,
       pic_info->height);
-  gboolean result = FALSE;
 
   if (pic_info->height == 1088)
     pic_info->height = 1080;
@@ -1435,10 +1434,12 @@ bcmdec_process_output (void *ctx)
 
     GST_DEBUG_OBJECT (bcmdec, "wait over streaming = %d", bcmdec->streaming);
     while (bcmdec->streaming && !bcmdec->last_picture_set) {
-      GST_DEBUG_OBJECT (bcmdec, "Getting Status");
-      // NAREN FIXME - This is HARDCODED right now till we get HW PAUSE and RESUME working from the driver
       uint32_t rll;
       gboolean tmp;
+      guint8 *data_ptr;
+
+      GST_DEBUG_OBJECT (bcmdec, "Getting Status");
+      // NAREN FIXME - This is HARDCODED right now till we get HW PAUSE and RESUME working from the driver
       decif_get_drv_status (&(bcmdec->decif), &tmp, &rll, &nextPicNumFlags);
       if (rll >= 12 && !is_paused) {
         GST_DEBUG_OBJECT (bcmdec, "HW PAUSE with RLL %u", rll);
@@ -1459,7 +1460,6 @@ bcmdec_process_output (void *ctx)
           continue;
       }
 
-      guint8 *data_ptr;
       if (gstbuf == NULL) {
         if (!bcmdec->rbuf_thread_running) {
           gint size =
