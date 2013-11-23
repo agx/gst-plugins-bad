@@ -24,6 +24,10 @@
  * along with this library.  If not, see <http://www.gnu.org/licenses/>.
  *
  *******************************************************************/
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
+
 #include <stdio.h>
 #include <string.h>
 #include <stdlib.h>
@@ -42,10 +46,6 @@
 #include <gst/base/gstadapter.h>
 #include <gst/video/video.h>
 #include <gst/video/gstvideopool.h>
-
-#ifdef HAVE_CONFIG_H
-#include <config.h>
-#endif
 
 #include <gst/gst.h>
 
