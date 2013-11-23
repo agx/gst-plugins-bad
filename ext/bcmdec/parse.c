@@ -137,7 +137,7 @@ GetNaluType (Parse * parse, guint8 * pInputBuf, guint32 ulSize, NALU_t * pNalu)
   if (!parse->bIsFirstByteStreamNALU && nLeadingZero8BitsCount > 0)
     return -1;
 
-  parse->bIsFirstByteStreamNALU = false;
+  parse->bIsFirstByteStreamNALU = FALSE;
 
   bStartCodeFound = 0;
   b20sInSC = 0;
@@ -199,7 +199,7 @@ parseAVC (Parse * parse, guint8 * pInputBuf, guint32 ulSize, guint32 * Offset)
   NALU_t Nalu;
   gint ret = 0;
   guint32 Pos = 0;
-  gboolean bResult = false;
+  gboolean bResult = FALSE;
 
   while (1) {
     ret = GetNaluType (parse, pInputBuf + Pos, ulSize - Pos, &Nalu);
@@ -211,12 +211,12 @@ parseAVC (Parse * parse, guint8 * pInputBuf, guint32 ulSize, guint32 * Offset)
     switch (Nalu.NalUnitType) {
       case NALU_TYPE_SLICE:
       case NALU_TYPE_IDR:
-        bResult = true;
+        bResult = TRUE;
         break;
       case NALU_TYPE_SEI:
       case NALU_TYPE_PPS:
       case NALU_TYPE_SPS:
-        bResult = true;
+        bResult = TRUE;
         break;
       case NALU_TYPE_DPA:
       case NALU_TYPE_DPC:

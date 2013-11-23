@@ -823,7 +823,7 @@ bcmdec_process_play (GstBcmDec * bcmdec)
   bcInputFormat.OptFlags = 0x80000000 | vdecFrameRate23_97;
 
   // ENABLE the Following lines if HW Scaling is desired
-  bcInputFormat.bEnableScaling = false;
+  bcInputFormat.bEnableScaling = FALSE;
 //      bcInputFormat.ScalingParams.sWidth = 800;
 
   sts = decif_setinputformat (&bcmdec->decif, bcInputFormat);
@@ -1217,16 +1217,16 @@ bcmdec_format_change (GstBcmDec * bcmdec, BC_PIC_INFO_BLOCK * pic_info)
 
   // Interlaced
   if ((pic_info->flags & VDEC_FLAG_INTERLACED_SRC) == VDEC_FLAG_INTERLACED_SRC)
-    bcmdec->interlace = true;
+    bcmdec->interlace = TRUE;
   else
-    bcmdec->interlace = false;
+    bcmdec->interlace = FALSE;
 
   if ((bcmdec->input_format == BC_MSUBTYPE_AVC1)
       || (bcmdec->input_format == BC_MSUBTYPE_H264)) {
     if (!bcmdec->interlace && (pic_info->pulldown == vdecFrame_X1)
         && (pic_info->flags & VDEC_FLAG_FIELDPAIR)
         && (pic_info->flags & VDEC_FLAG_INTERLACED_SRC))
-      bcmdec->interlace = true;
+      bcmdec->interlace = TRUE;
   }
 
   result = bcmdec_negotiate_format (bcmdec);
@@ -1447,7 +1447,7 @@ bcmdec_process_output (void *ctx)
         is_paused = TRUE;
       } else if (rll < 12 && is_paused) {
         GST_DEBUG_OBJECT (bcmdec, "HW RESUME with RLL %u", rll);
-        decif_pause (&(bcmdec->decif), false);
+        decif_pause (&(bcmdec->decif), FALSE);
         is_paused = FALSE;
       }
 
