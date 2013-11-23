@@ -28,6 +28,8 @@
 #include "bc_dts_types.h"
 #include "parse.h"
 
+inline gint NextBit (SymbInt *);
+
 void
 parse_init (Parse * parse)
 {

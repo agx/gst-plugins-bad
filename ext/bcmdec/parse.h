@@ -104,7 +104,4 @@ gboolean SiUe (SymbInt * simb_int, guint32 * pCode);
 
 guint32 SiOffset (SymbInt *);
 
-inline gint NextBit (SymbInt *);
-
-
 #endif
