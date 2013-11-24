@@ -1123,32 +1123,11 @@ AG_GST_CHECK_FEATURE(CHROMAPRINT, [chromaprint], chromaprint, [
 dnl *** crystalhd ***
 translit(dnm, m, l) AM_CONDITIONAL(USE_CRYSTALHD, true)
 AG_GST_CHECK_FEATURE(CRYSTALHD, [crystalhd library], crystalhd, [
-  CRYSTALHD_CFLAGS="-I/usr/include/libcrystalhd"
-  CRYSTALHD_LIBS="-lcrystalhd"
-
-  save_CFLAGS=$CFLAGS
-  save_LIBS=$LIBS
-  CFLAGS="$CFLAGS $CRYSTALHD_CFLAGS"
-  LIBS="$LIBS $CRYSTALHD_LIBS"
-
-  AC_MSG_CHECKING([for crystalhd])
-  AC_LINK_IFELSE([AC_LANG_PROGRAM([[
-#include <inttypes.h>
-#include <stdlib.h>
-#include <libcrystalhd_if.h>
-]], [[
-    DtsDeviceClose(NULL);
-]])],
-  [ AC_MSG_RESULT(yes)
-    HAVE_CRYSTALHD="yes"
-    AC_SUBST(CRYSTALHD_CFLAGS)
-    AC_SUBST(CRYSTALHD_LIBS)
-  ],[AC_MSG_RESULT(no)
-     HAVE_CRYSTALHD="no"
+  PKG_CHECK_MODULES(CRYSTALHD, libcrystalhd, HAVE_CRYSTALHD="yes", [
+    HAVE_CRYSTALHD="no"
   ])
-
-  LIBS=$save_LIBS
-  CFLAGS=$save_CFLAGS
+  AC_SUBST(CRYSTALHD_CFLAGS)
+  AC_SUBST(CRYSTALHD_LIBS)
 ])
 
 dnl *** Curl ***
