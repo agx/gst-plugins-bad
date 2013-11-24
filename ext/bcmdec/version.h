@@ -27,7 +27,7 @@
 #ifndef _BC_DTS_VERSION_
 #define _BC_DTS_VERSION_
 //
-// The version format that we are adopting is 
+// The version format that we are adopting is
 // MajorVersion.MinorVersion.Revision
 // This will be the same for all the components.
 //
@@ -66,8 +66,8 @@
 
 /*========================== WDM Driver =================================*/
 
-/* 
- * Version number scheme for driver DVMJVer.DVMNVer.DVRev.UNMODIFIED 
+/*
+ * Version number scheme for driver DVMJVer.DVMNVer.DVRev.UNMODIFIED
  * Where DVMJVer = DRIVER_MAJOR_VERSION
  * DVMNVer = DRIVER_MINOR_VERSION
  * DVRev = DRIVER_REVISION

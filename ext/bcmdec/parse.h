@@ -61,8 +61,8 @@ typedef struct
   gint StartcodePrefixLen;      //! 4 for parameter sets and first slice in picture, 3 for everything else (suggested)
   guint Len;                    //! Length of the NAL unit (Excluding the start code, which does not belong to the NALU)
   guint MaxSize;                //! Nal Unit Buffer size
-  gint NalUnitType;             //! NALU_TYPE_xxxx  
-  gint ForbiddenBit;            //! should be always FALSE  
+  gint NalUnitType;             //! NALU_TYPE_xxxx
+  gint ForbiddenBit;            //! should be always FALSE
   guint8 *pNalBuf;
 } NALU_t;
 
