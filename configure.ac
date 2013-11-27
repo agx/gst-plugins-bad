@@ -1122,7 +1122,7 @@ AG_GST_CHECK_FEATURE(CHROMAPRINT, [chromaprint], chromaprint, [
 
 dnl *** crystalhd ***
 translit(dnm, m, l) AM_CONDITIONAL(USE_CRYSTALHD, true)
-AG_GST_CHECK_FEATURE(CRYSTALHD, [crystalhd library], crystalhd, [
+AG_GST_CHECK_FEATURE(CRYSTALHD, [crystalhd library], crystalhd >= 0.0.1, [
   PKG_CHECK_MODULES(CRYSTALHD, libcrystalhd, HAVE_CRYSTALHD="yes", [
     HAVE_CRYSTALHD="no"
   ])
