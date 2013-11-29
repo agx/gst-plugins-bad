@@ -142,16 +142,21 @@ static GstStaticPadTemplate src_factory =
 
 G_DEFINE_TYPE (GstBcmDec, gst_bcm_dec, GST_TYPE_ELEMENT);
 
-/* GObject vmethod implementations */
-
+/* initialize the bcmdec's class */
 static void
-gst_bcm_dec_base_init (gpointer gclass)
+gst_bcm_dec_class_init (GstBcmDecClass * klass)
 {
+  GObjectClass *gobject_class;
+  GstElementClass *gstelement_class;
   BC_HW_CAPS hwCaps;
   GstElementClass *element_class;
 
-  GST_DEBUG_OBJECT (gclass, "gst_bcm_dec_base_init");
-  element_class = GST_ELEMENT_CLASS (gclass);
+  gobject_class = (GObjectClass *) klass;
+  gstelement_class = (GstElementClass *) klass;
+
+  GST_DEBUG_OBJECT (klass, "gst_bcm_dec_class_init");
+
+  element_class = GST_ELEMENT_CLASS (klass);
 
   hwCaps.DecCaps = 0;
   decif_getcaps (NULL, &hwCaps);
@@ -159,7 +164,7 @@ gst_bcm_dec_base_init (gpointer gclass)
   gst_element_class_add_pad_template (element_class,
       gst_static_pad_template_get (&src_factory));
   if (hwCaps.DecCaps & BC_DEC_FLAGS_M4P2) {
-    GST_DEBUG_OBJECT (gclass, "Found M4P2 support");
+    GST_DEBUG_OBJECT (klass, "Found M4P2 support");
     gst_element_class_add_pad_template (element_class,
         gst_static_pad_template_get (&sink_factory_bcm70015));
   } else
@@ -169,21 +174,6 @@ gst_bcm_dec_base_init (gpointer gclass)
       "Generic Video Decoder",
       "Decodes various Video Formats using CrystalHD Decoders",
       "Broadcom Corp.");
-}
-
-/* initialize the bcmdec's class */
-static void
-gst_bcm_dec_class_init (GstBcmDecClass * klass)
-{
-  GObjectClass *gobject_class;
-  GstElementClass *gstelement_class;
-
-  gobject_class = (GObjectClass *) klass;
-  gstelement_class = (GstElementClass *) klass;
-
-  GST_DEBUG_OBJECT (klass, "gst_bcm_dec_class_init");
-
-  gst_bcm_dec_base_init (klass);
 
   gstelement_class->change_state = gst_bcm_dec_change_state;
 

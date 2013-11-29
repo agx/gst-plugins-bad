@@ -240,8 +240,6 @@ struct _GstBcmDecClass
 
 GType gst_bcm_dec_get_type (void);
 
-static void gst_bcm_dec_base_init (gpointer gclass);
-
 static void gst_bcm_dec_finalize (GObject * object);
 
 static GstFlowReturn
