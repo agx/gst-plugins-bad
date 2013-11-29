@@ -75,8 +75,9 @@ bcmdec_send_buff_detect_error (GstBcmDec * bcmdec, GstBuffer * buf,
   if (sts != BC_STS_SUCCESS) {
     gst_buffer_map (buf, &info, GST_MAP_READ);
     GST_ERROR_OBJECT (bcmdec, "proc input failed sts = %d", sts);
-    GST_ERROR_OBJECT (bcmdec, "Chain: timeStamp = %llu size = %d data = %p",
-        GST_BUFFER_DTS (buf), info.size, info.data);
+    GST_ERROR_OBJECT (bcmdec,
+        "Chain: timeStamp = %" G_GUINT64_FORMAT " size = %" G_GSIZE_FORMAT
+        " data = %p", GST_BUFFER_DTS (buf), info.size, info.data);
     gst_buffer_unmap (buf, &info);
     return GST_FLOW_ERROR;
   }
@@ -507,11 +508,13 @@ gst_bcm_dec_sink_set_caps (GstPad * pad, GstCaps * caps)
         buffer = gst_value_get_buffer (g_value);
         if (!gst_buffer_map (buffer, &info, GST_MAP_READ))
           goto map_error;
-        GST_DEBUG_OBJECT (bcmdec, "codec_data size = %d", info.size);
+        GST_DEBUG_OBJECT (bcmdec, "codec_data size = %" G_GSIZE_FORMAT,
+            info.size);
 
         /* parse the avcC data */
         if (info.size < 7) {
-          GST_ERROR_OBJECT (bcmdec, "avcC size %u < 7", info.size);
+          GST_ERROR_OBJECT (bcmdec, "avcC size %" G_GSIZE_FORMAT " < 7",
+              info.size);
           goto out;
         }
         /* parse the version, this must be 1 */
@@ -530,7 +533,8 @@ gst_bcm_dec_sink_set_caps (GstPad * pad, GstCaps * caps)
         if (!gst_buffer_map (buffer, &info, GST_MAP_READ))
           goto map_error;
 
-        GST_DEBUG_OBJECT (bcmdec, "codec_data size = %d", info.size);
+        GST_DEBUG_OBJECT (bcmdec, "codec_data size = %" G_GSIZE_FORMAT,
+            info.size);
         if (info.size == 4) {
           // Simple or Main Profile
           bcmdec->input_format = BC_MSUBTYPE_WMV3;
@@ -651,7 +655,7 @@ gst_bcm_dec_chain (GstPad * pad, GstObject * parent, GstBuffer * buf)
   if (GST_CLOCK_TIME_NONE != GST_BUFFER_TIMESTAMP (buf)) {
     if (bcmdec->base_time == 0) {
       bcmdec->base_time = GST_BUFFER_TIMESTAMP (buf);
-      GST_DEBUG_OBJECT (bcmdec, "base time is set to %llu",
+      GST_DEBUG_OBJECT (bcmdec, "base time is set to %" G_GUINT64_FORMAT,
           bcmdec->base_time / 1000000);
     }
     tCurrent = GST_BUFFER_TIMESTAMP (buf);
