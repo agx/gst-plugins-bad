@@ -73,12 +73,10 @@ bcmdec_send_buff_detect_error (GstBcmDec * bcmdec, GstBuffer * buf,
   sts = decif_send_buffer (&bcmdec->decif, pbuffer, size, tCurrent, flags);
 
   if (sts != BC_STS_SUCCESS) {
-    gst_buffer_map (buf, &info, GST_MAP_READ);
     GST_ERROR_OBJECT (bcmdec, "proc input failed sts = %d", sts);
     GST_ERROR_OBJECT (bcmdec,
         "Chain: timeStamp = %" G_GUINT64_FORMAT " size = %" G_GSIZE_FORMAT
         " data = %p", GST_BUFFER_DTS (buf), info.size, info.data);
-    gst_buffer_unmap (buf, &info);
     return GST_FLOW_ERROR;
   }
 
